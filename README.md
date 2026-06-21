@@ -141,3 +141,92 @@ având complexitate O(n log n) în toate cazurile. Avantajul său principal este
 folosește memorie suplimentară semnificativă și nu are degradare la O(n²). 
 Totuși, în practică poate fi mai lent decât Quick Sort și Merge Sort din cauza 
 accesului mai slab la memorie și a numărului mare de operații de heapify.
+
+**INTROSORT**
+
+Pentru IntroSort am folosit 4 teste mari cu N = 10.000.000 elemente:
+
+1. vector deja sortat crescător: aproximativ 0.6 secunde;
+2. vector sortat descrescător: aproximativ 0.6 secunde;
+3. vector cu valori generate aleatoriu: aproximativ 2.5 secunde;
+4. vector cu multe duplicate: aproximativ 1.8 secunde.
+
+IntroSort a avut rezultate foarte bune pe vectorii deja sortați crescător și descrescător. 
+Acest lucru se datorează faptului că algoritmul pornește de la Quick Sort cu pivot ales 
+prin metoda median-of-three.
+
+Pe vectorul aleatoriu timpul a fost mai mare, deoarece partiționarea implică mai multe
+comparații și interschimbări. Totuși, timpul a rămas bun pentru un set de 10.000.000 de 
+elemente. Pe testul cu multe duplicate, timpul a fost mai mic decât pe random,
+deoarece structura datelor a permis partiționări mai favorabile și mai puține operații
+costisitoare.
+
+IntroSort combină avantajele mai multor algoritmi: folosește Quick Sort pentru viteză, 
+Heap Sort ca metodă de siguranță dacă recursivitatea devine prea adâncă și Insertion Sort
+pentru subsecvențe mici.
+
+**Concluzie:**  
+Rezultatele confirmă faptul că IntroSort este un algoritm foarte eficient și stabil 
+pentru volume mari de date. A obținut timpi apropiați de Quick Sort pe cazurile 
+favorabile, dar are avantajul suplimentar că evită degradarea la O(n²) prin trecerea 
+la Heap Sort atunci când partiționările devin nefavorabile.
+Comparativ cu Heap Sort și Merge Sort, IntroSort a fost mai rapid în testele efectuate, 
+iar comparativ cu Quick Sort oferă o garanție mai bună în cazul unor inputuri dificile.
+
+**PATIENCE SORTING**
+
+Pentru Patience Sorting am folosit 4 teste mari cu N = 10.000.000 elemente:
+1. vector deja sortat crescător: aproximativ 12 secunde;
+2. vector sortat descrescător: aproximativ 2 secunde;
+3. vector cu valori generate aleatoriu: aproximativ 10.5 secunde;
+4. vector cu multe duplicate: aproximativ 10.5 secunde.
+
+Patience Sorting a avut succes pe vectorul sortat descrescător. 
+Acest lucru se explică prin modul de construire al grămezilor: pentru un vector descrescător,
+elementele pot fi puse în aceeași grămadă, deci se creează foarte puține grămezi.
+
+Pe vectorul crescător timpul a fost cel mai mare, deoarece fiecare element tinde să
+formeze o grămadă nouă. Astfel, numărul de grămezi devine foarte mare, iar etapa de
+extragere cu min-heap devine mai costisitoare.
+
+Pe vectorii aleatorii și pe cei cu multe duplicate, timpul a fost 
+apropiat de cel al cazului crescător, deoarece algoritmul creează un număr mare de 
+grămezi și are cost suplimentar pentru căutarea poziției fiecărui element și pentru 
+reconstrucția finală a vectorului sortat.
+
+**Concluzie:**  
+Patience Sorting are un comportament foarte dependent de structura inițială a datelor.
+A fost rapid pe vectorul descrescător, dar semnificativ mai lent pe vectorii crescători 
+și aleatorii (Adica are doar un caz bun si este o prostie). 
+Timpul obținut a fost foarte slab pe majoritatea testelor mari. *Este o mare aberatie
+si o prostie complicata si inutila*
+
+***O(n)***
+
+**RADIX SORT**
+
+Pentru Radix Sort am folosit 4 teste mari cu N = 10.000.000 elemente:
+
+1. vector deja sortat crescător: aproximativ 0.65 secunde;
+2. vector sortat descrescător: aproximativ 0.65 secunde;
+3. vector cu valori generate aleatoriu: aproximativ 0.63 secunde;
+4. vector cu multe duplicate: aproximativ 0.62 secunde.
+
+Implementarea folosită sortează numerele pe câte un byte, de la cel mai puțin semnificativ
+byte până la cel mai semnificativ. Pentru fiecare byte se folosește o sortare stabilă
+de tip Counting Sort, cu un vector de frecvență de dimensiune 256. Astfel, algoritmul nu
+are nevoie de un vector de frecvență pentru toate valorile posibile ale unui int, ci
+doar pentru valorile posibile ale unui byte.
+
+Pentru a suporta și numere negative, valorile au fost normalizate prin modificarea bitului
+de semn, astfel încât ordinea unsigned folosită intern să corespundă ordinii normale a
+numerelor întregi cu semn.
+
+Timpii obținuți sunt foarte apropiați pentru toate tipurile de input, deoarece Radix Sort
+nu depinde de ordinea inițială a elementelor.
+
+**Concluzie:**  
+Radix Sort a fost cel mai rapid algoritm testat până acum pe seturile mari.
+Rezultatele confirmă comportamentul aproape liniar al algoritmului, O(k·n), deci timpul este
+foarte stabil indiferent dacă vectorul este sortat, descrescător, aleatoriu sau are multe duplicate.
+Principalul avantaj este viteza foarte mare, iar principalul dezavantaj este faptul că algoritmul este specializat pentru valori întregi și folosește memorie suplimentară pentru vectorul temporar.
